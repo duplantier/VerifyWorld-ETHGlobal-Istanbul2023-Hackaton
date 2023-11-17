@@ -41,3 +41,40 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity)) !important;
+}
+
+.hover-to-shadow:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.43);
+}
+
+.contract-card {
+  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.73);
+}
+
+.sign-button {
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.23);
+}
+
+.sign-button:hover {
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.30);
+}
+
+.sign-icon {
+  color: white;
+}
+
+.sign-button:hover .sign-icon {
+  color: #ee2b2b;
+}
+
+.download-icon {
+  color: white;
+}
+
+.file-review:hover .download-icon {
+  color: #ee2b2b;
+}

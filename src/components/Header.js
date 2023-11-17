@@ -58,7 +58,7 @@ function ResponsiveAppBar({ is_dashboard }) {
 
     return (
         <AppBar position="static" sx={{
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "rgb(30 41 59);",
             justifyItems: "center",
             boxShadow: "none",
             paddingTop: "10px",
@@ -111,13 +111,11 @@ function ResponsiveAppBar({ is_dashboard }) {
 
                             }}
                         >
-                            <Box component="img" sx={{ width: "50px", justifyContent: "center", alignItems: "center" }} src={"../logo.png"} alt='logo of notionlift' />
+                            <Box component="img" sx={{ width: "50px", justifyContent: "center", alignItems: "center" }} src={"../deneme-logo.svg"} alt='logo of notionlift' />
                         </IconButton>
 
                         <Typography variant='h1' sx={{
-                            background: `-webkit-linear-gradient(10deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
+                            color: "white",
                             ml: "0.05em",
                             fontSize: "1.728rem",
                             ":hover": {
@@ -194,7 +192,11 @@ function ResponsiveAppBar({ is_dashboard }) {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <MenuItem key={index} onClick={handleCloseNavMenu}>{page}</MenuItem>
+                                <MenuItem sx={{
+                                    color: "white"
+                                }} key={index} onClick={handleCloseNavMenu}>
+                                    {page}
+                                </MenuItem>
                             ))}
 
                         </Menu>
@@ -232,7 +234,7 @@ function ResponsiveAppBar({ is_dashboard }) {
                                     onClick={handleCloseNavMenu}
                                 >
                                     <Typography variant='h5' sx={{
-                                        color: "black",
+                                        color: "white",
                                         mr: "1rem",
                                     }}>
                                         {page}
