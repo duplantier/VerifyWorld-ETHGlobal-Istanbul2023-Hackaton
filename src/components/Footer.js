@@ -18,9 +18,9 @@ const Footer = () => {
         });
     };
 
-    const program_name = "sqy1r"
-    const support_email = "sqy1r@support.com"
-    const twitter_handle = "sqy1r"
+    const program_name = "VerifyWorld"
+    // const support_email = "hello@verifyworld.com"
+    // const twitter_handle = "@verifyworld"
 
     const footerContent = [
         {
@@ -39,33 +39,33 @@ const Footer = () => {
             },
             ]
         },
-        {
-            title: "Contact Us",
-            data: [{
-                title: "Our Contact Page",
-                link: "/contact",
-            },
-            {
-                title: support_email,
-                link: "",
-            },
-            ]
-        },
-        {
-            title: "Socials",
-            data: [{
-                title: "Twitter ",
-                link: "https://twitter.com/" + twitter_handle,
-                icon: <AiFillTwitterCircle size={15} />,
-                open_in_new_tab: true,
-            },
-            ]
-        }
+        /*    {
+               title: "Contact Us",
+               data: [{
+                   title: "Our Contact Page",
+                   link: "/contact",
+               },
+               {
+                   title: support_email,
+                   link: "",
+               },
+               ]
+           },
+           {
+               title: "Socials",
+               data: [{
+                   title: "Twitter ",
+                   link: "https://twitter.com/" + twitter_handle,
+                   icon: <AiFillTwitterCircle size={15} />,
+                   open_in_new_tab: true,
+               },
+               ]
+           } */
     ]
 
-    const subTexts = [
+    /* const subTexts = [
         program_name + " runs under the company of Liya, LLC, a company registered in United States of America. Payment processing is handled through Liya, LLC's bank account & Stripe",
-    ]
+    ] */
 
     return (
         <Box sx={{
@@ -105,6 +105,8 @@ const Footer = () => {
                             }}>
                                 {column.title}
                             </Typography>
+
+
                             {
                                 column.data.map((item, index) => (
                                     <Typography key={index} variant="body2" sx={{
@@ -175,7 +177,7 @@ const Footer = () => {
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
             }} />
 
-            {
+            {/* {
                 subTexts.map((text, index) => (
                     <>
                         <Typography key={index} variant="body2" sx={{
@@ -198,7 +200,7 @@ const Footer = () => {
                     </>
                 ))
 
-            }
+            } */}
         </Box>
 
     )

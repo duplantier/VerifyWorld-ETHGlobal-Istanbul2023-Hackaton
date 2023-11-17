@@ -1,5 +1,9 @@
 export default function Upload() {
     return (
-        <h1 className="">Here is the Upload page</h1>
+        <>
+            <div className="h-screen">
+                trial
+            </div>
+        </>
     )
 }

@@ -18,7 +18,7 @@ function ResponsiveAppBar({ is_dashboard }) {
     const navigate = useNavigate();
     const theme = useTheme();
 
-    const app_name = "sqy1r"
+    const app_name = "VerifyWorld"
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -58,10 +58,10 @@ function ResponsiveAppBar({ is_dashboard }) {
 
     return (
         <AppBar position="static" sx={{
-            backgroundColor: "white",
+            backgroundColor: "#f5f5f5",
             justifyItems: "center",
             boxShadow: "none",
-            paddingTop: "25px",
+            paddingTop: "10px",
             paddingBottom: "10px",
             top: 0,
             left: 0,
