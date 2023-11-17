@@ -5,12 +5,14 @@ import Upload from './components/Upload.js';
 import View from './components/View.js';
 import Sign from './components/Sign.js';
 
+import Layout from './components/Layout.js';
+
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/">
+          <Route path="/" element={<Layout />}>
             <Route index element={"index"} />
             <Route path="upload" element={<Upload />} />
             <Route path="view" element={<View />} />
