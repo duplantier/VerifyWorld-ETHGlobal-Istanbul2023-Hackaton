@@ -9,8 +9,12 @@ import { FaFileWord, FaFileContract } from "react-icons/fa";
 
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
+import { Web3Storage } from "web3.storage";
 
 export default function View() {
+    const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
+const client = new Web3Storage({ token: web3StorageKey })
+
     const { file_id } = useParams()
     const navigate = useNavigate()
 
@@ -29,39 +33,51 @@ export default function View() {
     const [signedUsers, setSignedUsers] = useState([])
 
     useEffect(() => {
-        if(!file_id){
-            navigate("/")
+        const worker = async () => {
+            if(!file_id){
+                navigate("/")
+            }
+    
+            // get file data from ipfs
+    
+            const res = await client.get(file_id) // Promise<Web3Response | null>
+            const files = await res.files() // Promise<Web3File[]>
+
+            for (const file of files) {
+                if(file.name){
+                    setFileData({
+                        name: file.name,
+                        type: file.name.split(".")[1],
+                        can_be_viewed: true,
+                        can_be_downloaded: true,
+                        download_link: "https://google.com",
+                        open_link: "https://google.com" 
+                    })
+                }
+            }
+    
+            // get users who signed the file
+    
+            setSignedUsers([
+                {
+                    userId: "+90 546 972 4659",
+                    status: "Uploaded",
+                    isOwner: true,
+                    date: 1700319583000
+                }, 
+                {
+                    userId: "+90 531 351 6308",
+                    status: "Signed & Verified",
+                    isOwner: false,
+                    date: 1700319583000
+                },
+            ])
+    
+            console.log(file_id)
+
         }
 
-        // get file data from ipfs
-
-        setFileData({
-            name: "this_is_a_placeholder_name",
-            type: "pdf",
-            can_be_viewed: true,
-            can_be_downloaded: true,
-            download_link: "https://google.com",
-            open_link: "https://google.com"
-        })
-
-        // get users who signed the file
-
-        setSignedUsers([
-            {
-                userId: "+90 546 972 4659",
-                status: "Uploaded",
-                isOwner: true,
-                date: 1700319583000
-            }, 
-            {
-                userId: "+90 531 351 6308",
-                status: "Signed & Verified",
-                isOwner: false,
-                date: 1700319583000
-            },
-        ])
-
-        console.log(file_id)
+        worker()
 
     }, [file_id])
 

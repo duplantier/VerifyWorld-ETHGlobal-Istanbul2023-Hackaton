@@ -188,16 +188,19 @@ const Upload = () => {
             return false
         }
 
+        setBackdropOpen(true)
+        
         setUploadText("Uploading to IPFS...")
-        client.put(files)
+        await client.put(files)
             .then((cid) => {
                 return client.status(cid)
             })
             .then((status) => {
                 console.log("Uploaded to IPFS:", status)
-                setUploadedFileId(status["cid"])
+                setUploadedFileId(status["cid"])        
+                setUploadText("Uploading to Worldcoin...")        
                 setIsIdKitOpen(true)
-                setUploadText("Uploading to IPFS... Done")
+                setBackdropOpen(false)
             });
     }
 
