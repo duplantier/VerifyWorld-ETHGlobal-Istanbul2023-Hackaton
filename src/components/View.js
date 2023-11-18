@@ -6,9 +6,11 @@ import { RiAdminFill } from "react-icons/ri";
 import { FaFileSignature } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { BsEyeFill } from "react-icons/bs";
-
+import {useParams} from "react-router-dom"
 
 export default function View() {
+    const {file_id} = useParams()
+
     return (
         <>
             <div className=" w-[60%] rounded-[18px] contract-card m-8">
