@@ -1,5 +1,236 @@
-export default function Upload() {
-    return (
-        <h1 className="">Here is the Upload page</h1>
-    )
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import {useDropzone} from 'react-dropzone'
+import { Button, Box, Typography, Grid} from "@mui/material";
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+
+import AffiSnackbar from "../Dialogs/AffiSnackbar";
+import { IDKitWidget } from '@worldcoin/idkit'
+
+function MyDropzone({files, setFiles, gaveError}) {
+
+  const onDrop = React.useCallback(acceptedFiles => {
+    if(acceptedFiles.length === 0) return false
+    if(acceptedFiles.length > 1){
+        gaveError("Only one file is allowed", 3000)
+        return false
+    }
+
+    const file = acceptedFiles[0]
+
+    if(file.size > 10000000){
+        gaveError("File size should be less than 10 MB", 3000)
+        return false
+    }
+
+    setFiles([file])
+
+  }, [gaveError, setFiles])
+
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+
+  return (
+    <Box component={"div"} sx={{
+        width: "60%",
+        border: "2px dashed #7851F4",
+        borderRadius: "10px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        gap: "1rem",
+        padding: "2rem",
+        margin: "2rem auto",
+        background: isDragActive ? "#E5E5E5" : "white",
+        ":hover": {
+            cursor: "pointer",
+        }
+
+    }} {...getRootProps()}>
+      <input {...getInputProps()} />
+      <Box sx={{
+        height: "200px",
+        width: "100%",
+      }}>
+      {
+        isDragActive ?
+        <Box component={"div"}>
+        <Typography variant="h3" sx={{fontWeight: "bold", fontSize: "2rem", mt: "1rem",  
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+            background: "-webkit-linear-gradient(45deg, #328EDE 50%, #7851F4 95%)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"}}>Drop The File Here</Typography>
+        </Box> :
+          <Box component={"div"} sx={{
+
+            }}>
+            <Typography variant="h3" sx={{fontWeight: "bold", fontSize: "2rem", mt: "1rem",  
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "-webkit-linear-gradient(45deg, #328EDE 50%, #7851F4 95%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"}}>Drag & Drop Documents</Typography>
+            <Typography variant="body1" sx={{textAlign: "center", mt: "2.5rem", }}>or click to choose from files</Typography>
+            </Box>
+
+      }
+      </Box>
+
+      <Grid container sx={{m: "1rem", mt: "1.5rem"}} gap={"1.5rem 0.75rem"} >
+      {
+      files.map(file => {
+        return <Grid item xs>
+            <Box component={"div"} onClick={(e) => {e.stopPropagation()}} sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                padding: "0.5rem 1rem",
+                border: "1px solid #7851F4",
+                borderRadius: "10px",
+                background: "-webkit-linear-gradient(45deg, #328EDE 50%, #7851F4 95%)",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "0.9rem",
+                }}>
+                <RemoveCircleIcon sx={{cursor: "pointer", transform: "scale(1.2)"}} onClick={() => {
+                    setFiles(old_files => old_files.filter(old_file => old_file.name !== file.name))
+                }}></RemoveCircleIcon>
+
+                <Typography variant="body1">{file.name}</Typography>
+                <Typography variant="body1">{(file.size/1000000).toFixed(2)} MB</Typography>
+
+            </Box>
+
+            </Grid>
+      })
+    }
+
+</Grid>
+    </Box>
+  )
 }
+
+
+const Upload = () => {
+    const [files, setFiles] = React.useState([])
+    const [isIdKitOpen, setIsIdKitOpen] = React.useState(false)
+    const [uploadedFileId, setUploadedFileId] = React.useState("")
+
+    const [snackOpen, setSnackOpen] = React.useState({
+        open: false,
+        text: "",
+        is_success: false,
+      });
+    const navigate = useNavigate()
+
+    const gaveError = (err, timeErrorStays) => {
+        setSnackOpen({
+            open: true,
+            text: err,
+            is_success: false,
+            });
+        setTimeout(() => {
+            setSnackOpen({
+                open: false,
+                text: "",
+                is_success: false,
+            });
+            }
+        , timeErrorStays);
+    }
+
+    const handleSubmit = async () => {
+        if(files.length === 0){
+            gaveError("Please upload a file", 3000)
+            return false
+        }
+
+        const uploaded_file_id = "this_is_a_placeholder_id" // upload file to ipfs and get the id
+        setUploadedFileId(uploaded_file_id)
+
+        setIsIdKitOpen(true)
+    }
+
+    return (
+        <div>
+        <AffiSnackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen}/>
+        
+          <IDKitWidget
+          app_id="app_9c6ee19d87889b2f583957ad6f541f66" // obtained from the Developer Portal
+          action="upload-and-sign" // this is your action name from the Developer Portal
+          onSuccess={() => {
+            navigate("/sign", {state: {file_id: uploadedFileId, redirect: "/upload"}})
+          }} // callback when the modal is closed
+          handleVerify={async (data) => {
+              const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    ...data,
+                    file_id: uploadedFileId,
+                  }),
+              })
+
+              const response = await response_from_backend.json()
+
+              if(response.isVerified){
+                setSnackOpen({
+                  open: true,
+                  text: "Your identity is verified",
+                  is_success: true,
+                });
+
+              }
+              else{
+                setSnackOpen({
+                  open: true,
+                  text: "Your identity is not verified",
+                  is_success: false,
+                });
+
+              }
+
+              console.log(response)
+
+              setIsIdKitOpen(false)
+              return true
+
+          }} // optional callback when the proof is received
+          credential_types={['orb', 'phone']} // optional, defaults to ['orb']
+          enableTelemetry // optional, defaults to false
+        >
+          {({ open }) => isIdKitOpen && open()}
+        </IDKitWidget>
+        
+            <MyDropzone files={files} setFiles={setFiles} gaveError={gaveError}></MyDropzone>
+            
+        <Box sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            mt: "2rem",
+            mb: "5rem",
+        }}>
+        <Button
+                  variant="contained"   
+                  color="primary"
+                  size="large"
+                  onClick={handleSubmit}
+                  sx={{
+                    p: "1rem 2rem",
+                  }}
+                >
+                  Submit & Sign
+                </Button>
+        </Box>
+ 
+
+        </div>
+    );
+};
+
+export default Upload;
