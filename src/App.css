@@ -43,7 +43,7 @@
 }
 
 body {
-  background-color: rgb(15 23 42 / var(--tw-bg-opacity)) !important;
+  background-color: black;
 }
 
 .hover-to-shadow:hover {
@@ -71,10 +71,15 @@ body {
   color: #ee2b2b;
 }
 
-.download-icon {
+.download-icon,
+.see-icon {
   color: white;
 }
 
-.file-review:hover .download-icon {
+.see-btn:hover .see-icon {
+  color: #ee2b2b;
+}
+
+.download-btn:hover .download-icon {
   color: #ee2b2b;
 }

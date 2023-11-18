@@ -25,6 +25,7 @@ const Footer = () => {
     const footerContent = [
         {
             title: program_name,
+            logo: 'deneme-logo.svg',
             data: [{
                 title: program_name + " ©{year}".replace("{year}", year),
                 link: "/",
@@ -84,11 +85,11 @@ const Footer = () => {
             <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" alignContent={"center"}
                 xs={12} sm={11} md={10} lg={8} xl={6}
                 spacing={2} gap={3} sx={{
-                    mb: "2rem",
+                    mb: "1rem",
                     mt: "1rem",
                 }}>
-
                 {
+
                     footerContent.map((column, index) => (
                         <Grid item key={index} xs sx={{
                             display: "flex",
@@ -99,6 +100,7 @@ const Footer = () => {
                             gap: "1rem",
                             minWidth: "200px",
                         }}>
+                            <img src={column.logo} />
                             <Typography variant="h5" sx={{
                                 color: "rgba(255, 255, 255, 1)",
                                 mb: "2rem",
@@ -170,12 +172,12 @@ const Footer = () => {
 
             </Grid>
 
-            <Divider sx={{
+            {/* <Divider sx={{
                 width: "100%",
                 mt: "1rem",
                 mb: "1rem",
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
-            }} />
+            }} /> */}
 
             {/* {
                 subTexts.map((text, index) => (

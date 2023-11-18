@@ -58,7 +58,7 @@ function ResponsiveAppBar({ is_dashboard }) {
 
     return (
         <AppBar position="static" sx={{
-            backgroundColor: "rgb(30 41 59);",
+            backgroundColor: "rgb(15 23 42)",
             justifyItems: "center",
             boxShadow: "none",
             paddingTop: "10px",
@@ -70,7 +70,6 @@ function ResponsiveAppBar({ is_dashboard }) {
             paddingLeft: "2rem",
             paddingRight: "2rem",
             alignItems: "center",
-            position: "sticky",
         }}>
 
             <Container maxWidth >
