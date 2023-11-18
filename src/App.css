@@ -2,77 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-body {
-  background-color: black;
-}
-
+/* General Purposes */
 .hover-to-shadow:hover {
   cursor: pointer;
   box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.43);
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
-.contract-card {
-  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.73);
+.main-container {
+  background-image: url("/public/bg.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  background-size: 100%;
+  animation: bgSize 3s ease-in-out 1 alternate;
 }
 
+@keyframes bgSize {
+  0% {
+    background-size: 200%;
+  }
+
+  100% {
+    background-size: 100%;
+  }
+}
+
+/* View The Documentation Page */
 .sign-button {
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.23);
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 .sign-button:hover {
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.30);
-}
-
-.sign-icon {
-  color: white;
-}
-
-.sign-button:hover .sign-icon {
-  color: #ee2b2b;
+  border: 1px solid #29ffbf;
 }
 
 .download-icon,
-.see-icon {
+.see-icon,
+.sign-icon {
   color: white;
 }
 
@@ -82,4 +51,42 @@ body {
 
 .download-btn:hover .download-icon {
   color: #ee2b2b;
+}
+
+.parent-card,
+.contract-card,
+.header-logo,
+.header-nav,
+.contract-name-div {
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.50);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+
+}
+
+.contract-card {
+  background-color: rgba(17, 25, 40, 0.50);
+  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.73);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+
+/* Upload (Home) Page */
+.upload-sign-btn {
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.50);
+  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.73);
+  border: 2px solid #29ffbf;
+  color: white;
+  padding: 1rem;
+  transition: linear 0.1s;
+
+}
+
+.upload-sign-btn:hover {
+  border: 2px solid #02b27e;
+  color: #29ffbf;
+  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.43);
 }
