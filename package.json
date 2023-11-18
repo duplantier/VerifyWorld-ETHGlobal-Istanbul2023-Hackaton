@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@ipld/car": "^5.2.4",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@testing-library/jest-dom": "^5.17.0",
@@ -12,8 +13,10 @@
     "@testing-library/user-event": "^13.5.0",
     "@web3-storage/w3up-client": "^11.0.1",
     "@worldcoin/idkit": "^0.5.1",
+    "ipfs-car": "^1.0.0",
     "ipfs-core": "^0.18.1",
     "ipfs-http-client": "^60.0.1",
+    "ipfs-unixfs-exporter": "^13.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",

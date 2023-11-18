@@ -10,11 +10,16 @@ import { FaFileWord, FaFileContract } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { Web3Storage } from "web3.storage";
+import { CarReader } from '@ipld/car/reader'
+import { recursive as exporter } from 'ipfs-unixfs-exporter'
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function View() {
     const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
     const client = new Web3Storage({ token: web3StorageKey })
 
+
+    const [backdropOpen, setBackdropOpen] = useState(false)
     const { file_id } = useParams()
     const navigate = useNavigate()
 
@@ -32,6 +37,47 @@ export default function View() {
 
     const [signedUsers, setSignedUsers] = useState([])
 
+    const downloadBlob = async () => {
+        setBackdropOpen(true)
+        const url_of_file = fileData.url_of_file
+
+        const res = await fetch(url_of_file)
+        const blob = await res.blob()
+
+        const rrrr = await CarReader.fromBytes(new Uint8Array(await blob.arrayBuffer()))
+        const roots = await rrrr.getRoots()
+
+        const entries = exporter(roots[0], {
+            async get (cid) {
+              const block = await rrrr.get(cid)
+              return block.bytes
+            }
+          })    
+        
+          for await (const entry of entries) {
+            if (entry.type === 'file' || entry.type === 'raw') {
+                let all_content = new Uint8Array()
+
+                for await (const content of entry.content()) {
+                    all_content = new Uint8Array([...all_content, ...content])
+                }
+
+                const blob = new Blob([all_content]);
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = entry.name;
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+            }
+          }
+
+        setBackdropOpen(false)
+      };
+
     useEffect(() => {
         const worker = async () => {
             if (!file_id) {
@@ -40,22 +86,23 @@ export default function View() {
 
             // get file data from ipfs
 
+            setBackdropOpen(true)
             const res = await client.get(file_id) // Promise<Web3Response | null>
-            const files = await res.files() // Promise<Web3File[]>
+            const url_of_file = res.url
+            const files = await res.files()
 
             for (const file of files) {
                 if (file.name) {
-                    setFileData({
-                        name: file.name,
-                        type: file.name.split(".")[1],
-                        can_be_viewed: true,
-                        can_be_downloaded: true,
-                        download_link: "https://google.com",
-                        open_link: "https://google.com"
-                    })
-                }
-            }
 
+                  setFileData((prevFileData) => ({
+                    ...prevFileData,
+                    name: file.name,
+                    type: file.name.split(".")[1],
+                    can_be_viewed: true,
+                    url_of_file: url_of_file,
+                  }));
+                }
+              }
             // get users who signed the file
 
             setSignedUsers([
@@ -73,8 +120,9 @@ export default function View() {
                 },
             ])
 
-            console.log(file_id)
 
+            setBackdropOpen(false)
+    
         }
 
         worker()
@@ -92,9 +140,15 @@ export default function View() {
 
     return (
         <>
+      <Backdrop open={backdropOpen} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
+            <CircularProgress color="inherit" />
+        </Backdrop>
             <div className="w-[90%] h-[110vh] md:h-[70vh] lg:w-[90%] contract-card m-3 lg:m-5  rounded-[24px]">
                 <div className="h-auto lg:px-6 lg:py-4 flex flex-col justify-around items-center lg:w-[100%] bg-none">
                     <div className="flex flex-col md:flex-row justify-center items-center p-3 m-5 text-center lg:mt-3 lg:p-4 md:w-[90%] lg:w-[100%] rounded-lg hover-to-shadow  file-info" >
+            <div className=" w-[60%] rounded-[18px] contract-card m-8">
+                <div className="card-body p-5 pt-0 flex flex-col justify-around items-center">
+                    <div className="flex justify-around items-center mt-3 p-4 rounded-lg hover-to-shadow gap-2 file-review" >
                         {
                             fileData.type === "pdf" ? <BsFilePdfFill className="block md:inline" color="#ee2b2b" size={50} /> :
                                 fileData.type === "docx" ? <FaFileWord className="block md:inline" color="#ee2b2b" size={50} /> :
@@ -104,17 +158,13 @@ export default function View() {
                         <span className="text-white text-2xl text-center">
                             {fileData.name}
                         </span>
-
                         <div className="mt-2 flex justify-center items-center gap-3 md:gap-5 md:flex-1  " >
                             {
-                                fileData.can_be_downloaded && <span className=" p-3 download-btn hover-to-shadow rounded-xl" onClick={() => {
-                                    openInNewTab(fileData.download_link)
-                                }}>
+                                fileData.can_be_downloaded && <span className=" p-3 download-btn hover-to-shadow rounded-xl" onClick={downloadBlob}>
                                     <IoMdDownload className="download-icon " size={20} />
                                 </span>
                             }
                         </div>
-
                     </div>
                     <div className="signers flex flex-col gap-5 justify-center md:align-start w-[90%] h-[550px] md:h-[auto] md:my-10 overflow-y-scroll p-4 pt-0">
                         {

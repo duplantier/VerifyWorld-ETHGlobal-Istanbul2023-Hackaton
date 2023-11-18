@@ -212,7 +212,7 @@ const Upload = () => {
 
     return (
         <div>
-            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={backdropOpen} onClick={() => { setBackdropOpen(false) }}>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={backdropOpen}>
                 <CircularProgress color="inherit" />
             </Backdrop>
 
@@ -273,7 +273,7 @@ const Upload = () => {
                 justifyContent: "center",
                 mb: "2rem",
             }}>
-                <button onClick={handleSubmit} className="upload-sign-btn p-3 font-bold rounded-[12px] text-black ">
+                <button onClick={handleSubmit} className="upload-sign-btn p-3 font-bold rounded-[12px] text-black" disabled={backdropOpen}>
                     {uploadText}
                 </button>
             </Box>
