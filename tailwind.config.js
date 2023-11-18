@@ -8,10 +8,6 @@ module.exports = {
 }
 
 /* 
-kontrat okumak
-solidity temelli
-graphql / graph
-ethers, wagmi, viem 
 
 
 

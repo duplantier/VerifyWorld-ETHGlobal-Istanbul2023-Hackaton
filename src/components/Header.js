@@ -18,7 +18,7 @@ function ResponsiveAppBar({ is_dashboard }) {
     const navigate = useNavigate();
     const theme = useTheme();
 
-    const app_name = "sqy1r"
+    const app_name = "VerifyWorld"
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -58,10 +58,10 @@ function ResponsiveAppBar({ is_dashboard }) {
 
     return (
         <AppBar position="static" sx={{
-            backgroundColor: "white",
+            backgroundColor: "rgb(15 23 42)",
             justifyItems: "center",
             boxShadow: "none",
-            paddingTop: "25px",
+            paddingTop: "10px",
             paddingBottom: "10px",
             top: 0,
             left: 0,
@@ -70,7 +70,6 @@ function ResponsiveAppBar({ is_dashboard }) {
             paddingLeft: "2rem",
             paddingRight: "2rem",
             alignItems: "center",
-            position: "sticky",
         }}>
 
             <Container maxWidth >
@@ -111,13 +110,11 @@ function ResponsiveAppBar({ is_dashboard }) {
 
                             }}
                         >
-                            <Box component="img" sx={{ width: "50px", justifyContent: "center", alignItems: "center" }} src={"../logo.png"} alt='logo of notionlift' />
+                            <Box component="img" sx={{ width: "50px", justifyContent: "center", alignItems: "center" }} src={"../deneme-logo.svg"} alt='logo of notionlift' />
                         </IconButton>
 
                         <Typography variant='h1' sx={{
-                            background: `-webkit-linear-gradient(10deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
+                            color: "white",
                             ml: "0.05em",
                             fontSize: "1.728rem",
                             ":hover": {
@@ -194,7 +191,11 @@ function ResponsiveAppBar({ is_dashboard }) {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <MenuItem key={index} onClick={handleCloseNavMenu}>{page}</MenuItem>
+                                <MenuItem sx={{
+                                    color: "white"
+                                }} key={index} onClick={handleCloseNavMenu}>
+                                    {page}
+                                </MenuItem>
                             ))}
 
                         </Menu>
@@ -232,7 +233,7 @@ function ResponsiveAppBar({ is_dashboard }) {
                                     onClick={handleCloseNavMenu}
                                 >
                                     <Typography variant='h5' sx={{
-                                        color: "black",
+                                        color: "white",
                                         mr: "1rem",
                                     }}>
                                         {page}

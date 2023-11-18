@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 const IndexLayout = () => {
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <Outlet />
             <Footer />
         </>
