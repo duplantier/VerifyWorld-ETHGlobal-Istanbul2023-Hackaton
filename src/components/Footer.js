@@ -83,7 +83,7 @@ const Footer = () => {
                                     {column.title}
 
                                 </Typography>
-                                <p className='text-white'>
+                                <p className='text-white text-center'>
                                     VerifyWorld is a platform that allows you to verify the authenticity of your documents using WorldID.
                                 </p>
 
