@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useDropzone } from 'react-dropzone'
-import { Button, Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Backdrop, CircularProgress } from "@mui/material";
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { MdCloudUpload } from "react-icons/md";
 
@@ -18,7 +18,7 @@ function MyDropzone({ files, setFiles, gaveError }) {
     const onDrop = React.useCallback(acceptedFiles => {
         if (acceptedFiles.length === 0) return false
         if (acceptedFiles.length > 1) {
-            gaveError("Only one file is allowed", 3000)
+            gaveError("Only one file per attempt is allowed", 3000)
             return false
         }
 
@@ -50,7 +50,6 @@ function MyDropzone({ files, setFiles, gaveError }) {
             background: isDragActive ? "rgba(255, 255, 255, 0.125)" : "rgba(255, 255, 255, 0.20)",
             backdropFilter: "blur(10px) saturate(180%)",
 
-            // sx içinde hover vermek:
             ":hover": {
                 cursor: "pointer",
                 backgroundColor: "rgba(255, 255, 255, 0.125)",
@@ -158,6 +157,8 @@ const Upload = () => {
     const [isIdKitOpen, setIsIdKitOpen] = React.useState(false)
     const [uploadedFileId, setUploadedFileId] = React.useState("")
     const [uploadText, setUploadText] = useState("Upload & Sign The Document")
+
+    const [backdropOpen, setBackdropOpen] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState({
         open: false,
         text: "",
@@ -202,6 +203,10 @@ const Upload = () => {
 
     return (
         <div>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={backdropOpen} onClick={() => { setBackdropOpen(false) }}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
             <AffiSnackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen} />
 
             <IDKitWidget

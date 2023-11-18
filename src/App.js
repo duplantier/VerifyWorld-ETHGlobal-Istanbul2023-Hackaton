@@ -14,6 +14,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Upload />} />
             <Route path="upload" element={<Upload />} />
+            <Route path="view" element={<View />} />
             <Route path="view/:file_id" element={<View />} />
           </Route>
         </Routes>
