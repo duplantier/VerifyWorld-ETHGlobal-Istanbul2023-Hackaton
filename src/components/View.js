@@ -85,20 +85,19 @@ export default function View() {
                 navigate("/")
             }
 
-            // get file data from ipfs
-
             setBackdropOpen(true)
-            const res = await client.get(file_id) // Promise<Web3Response | null>
+            const res = await client.get(file_id)
             const url_of_file = res.url
             const files = await res.files()
 
             for (const file of files) {
                 if (file.name) {
+                    const file_name = file.name + ""
 
                     setFileData((prevFileData) => ({
                         ...prevFileData,
-                        name: file.name,
-                        type: file.name.split(".")[1],
+                        name: file_name.slice(0, file_name.length - 4),
+                        type: file_name.split(".")[file_name.split(".").length-1],
                         can_be_viewed: true,
                         url_of_file: url_of_file,
                     }));
@@ -153,7 +152,9 @@ export default function View() {
                         }
 
                         <span className="text-white text-2xl text-center">
-                            {fileData.name}
+                            {
+                                (fileData.name > 30 ? fileData.name.slice(0, 27) + ".." : fileData.name) + "." + fileData.type
+                            }
                         </span>
 
                         <div className="mt-2 flex justify-center items-center" >
