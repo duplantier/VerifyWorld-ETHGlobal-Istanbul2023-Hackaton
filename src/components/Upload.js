@@ -198,7 +198,7 @@ const Upload = () => {
                 app_id="app_9c6ee19d87889b2f583957ad6f541f66" // obtained from the Developer Portal
                 action="upload-and-sign" // this is your action name from the Developer Portal
                 onSuccess={() => {
-                    navigate("/sign", { state: { file_id: uploadedFileId, redirect: "/upload" } })
+                    navigate("/view/" + uploadedFileId)
                 }} // callback when the modal is closed
                 handleVerify={async (data) => {
                     const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
@@ -230,8 +230,6 @@ const Upload = () => {
                         });
 
                     }
-
-                    console.log(response)
 
                     setIsIdKitOpen(false)
                     return true
