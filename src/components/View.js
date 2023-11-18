@@ -6,10 +6,10 @@ import { RiAdminFill } from "react-icons/ri";
 import { FaFileSignature } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { BsEyeFill } from "react-icons/bs";
-import {useParams} from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 export default function View() {
-    const {file_id} = useParams()
+    const { file_id } = useParams()
 
     return (
         <>
@@ -17,7 +17,9 @@ export default function View() {
                 <div className="card-body p-5 pt-0 flex flex-col justify-around items-center">
                     <div className="flex justify-around items-center mt-3 p-4 rounded-lg hover-to-shadow gap-2 file-review" >
                         <BsFilePdfFill color="#ee2b2b" size={50} />
-                        <span className="text-white text-2xl">home-contract-12-12-21.pdf</span>
+                        <span className="text-white text-2xl">
+                            {file_id} id'li dosya
+                        </span>
                         <span className="p-3 download-btn hover-to-shadow rounded-xl">
                             <IoMdDownload className="download-icon " size={20} />
                         </span>

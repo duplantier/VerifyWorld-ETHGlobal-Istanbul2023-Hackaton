@@ -20,11 +20,11 @@ const IndexLayout = () => {
                                 <a href="/upload">Upload</a>
                             </span>
                         </div> */}
-                        <div onClick={() => navigate('view')} className="py-2 px-3 w-[200px] h-[50px] header-nav hover:h-[60px] duration-300 bg-slate-800 hover:bg-slate-900 cursor-pointer flex justify-center items-center rounded-tl-[12px] rounded-tr-[12px]">
+                        {/* <div onClick={() => navigate('view')} className="py-2 px-3 w-[200px] h-[50px] header-nav hover:h-[60px] duration-300 bg-slate-800 hover:bg-slate-900 cursor-pointer flex justify-center items-center rounded-tl-[12px] rounded-tr-[12px]">
                             <span className="text-white text-lg">
                                 View The Document
                             </span>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
