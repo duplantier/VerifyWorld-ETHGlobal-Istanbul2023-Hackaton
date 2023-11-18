@@ -10,11 +10,16 @@ import { FaFileWord, FaFileContract } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { Web3Storage } from "web3.storage";
+import { CarReader } from '@ipld/car/reader'
+import { recursive as exporter } from 'ipfs-unixfs-exporter'
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function View() {
     const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
 const client = new Web3Storage({ token: web3StorageKey })
 
+
+    const [backdropOpen, setBackdropOpen] = useState(false)
     const { file_id } = useParams()
     const navigate = useNavigate()
 
@@ -31,19 +36,46 @@ const client = new Web3Storage({ token: web3StorageKey })
     })
 
     const [signedUsers, setSignedUsers] = useState([])
-    const [selectedBlob, setSelectedBlob] = useState(null)
 
-    const downloadBlob = () => {
-        const url = URL.createObjectURL(selectedBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileData.name;
-      
-        // Programmatically trigger a click on the link
-        link.click();
-      
-        // Clean up resources
-        URL.revokeObjectURL(url);
+    const downloadBlob = async () => {
+        setBackdropOpen(true)
+        const url_of_file = fileData.url_of_file
+
+        const res = await fetch(url_of_file)
+        const blob = await res.blob()
+
+        const rrrr = await CarReader.fromBytes(new Uint8Array(await blob.arrayBuffer()))
+        const roots = await rrrr.getRoots()
+
+        const entries = exporter(roots[0], {
+            async get (cid) {
+              const block = await rrrr.get(cid)
+              return block.bytes
+            }
+          })    
+        
+          for await (const entry of entries) {
+            if (entry.type === 'file' || entry.type === 'raw') {
+                let all_content = new Uint8Array()
+
+                for await (const content of entry.content()) {
+                    all_content = new Uint8Array([...all_content, ...content])
+                }
+
+                const blob = new Blob([all_content]);
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = entry.name;
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+            }
+          }
+
+        setBackdropOpen(false)
       };
 
     useEffect(() => {
@@ -53,13 +85,24 @@ const client = new Web3Storage({ token: web3StorageKey })
             }
     
             // get file data from ipfs
+
+            setBackdropOpen(true)
     
             const res = await client.get(file_id) // Promise<Web3Response | null>
-            const blob_data = await res.blob() // Promise<Blob>
-            setSelectedBlob(blob_data);
+            const url_of_file = res.url
+            const files = await res.files()
 
-
-        
+            for (const file of files) {
+                if (file.name) {
+                  setFileData((prevFileData) => ({
+                    ...prevFileData,
+                    name: file.name,
+                    type: file.name.split(".")[1],
+                    can_be_viewed: true,
+                    url_of_file: url_of_file,
+                  }));
+                }
+              }
     
             // get users who signed the file
     
@@ -77,9 +120,9 @@ const client = new Web3Storage({ token: web3StorageKey })
                     date: 1700319583000
                 },
             ])
-    
-            console.log(file_id)
 
+            setBackdropOpen(false)
+    
         }
 
         worker()
@@ -97,6 +140,10 @@ const client = new Web3Storage({ token: web3StorageKey })
 
     return (
         <>
+        <Backdrop open={backdropOpen} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
+            <CircularProgress color="inherit" />
+        </Backdrop>
+
             <div className=" w-[60%] rounded-[18px] contract-card m-8">
                 <div className="card-body p-5 pt-0 flex flex-col justify-around items-center">
                     <div className="flex justify-around items-center mt-3 p-4 rounded-lg hover-to-shadow gap-2 file-review" >
