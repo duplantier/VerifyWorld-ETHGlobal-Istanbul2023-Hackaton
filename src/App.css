@@ -28,6 +28,44 @@
   }
 }
 
+/* Scrollbar properties */
+::-webkit-scrollbar {
+  width: 0.45em;
+  height: 0.7em;
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+/*Scrolbar itself */
+::-webkit-scrollbar-track {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 24px;
+}
+
+/* The stick we hold */
+::-webkit-scrollbar-thumb {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: #29ffbf;
+  border-radius: 24px;
+  border: 1px solid #29ffbf;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #02b27e;
+  border: 1px solid #02b27e;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #00714f;
+  border: 1px solid #00714f;
+}
+
 /* View The Documentation Page */
 .sign-button {
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.23);

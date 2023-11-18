@@ -26,7 +26,7 @@ export default function View() {
                         </span>
 
                     </div>
-                    <div className="signers flex flex-col justify-start align-start">
+                    <div className="signers flex flex-col justify-start align-start h-[200px] overflow-y-scroll">
                         <div className="signer flex justify-center align-center gap-4 p-3 rounded-lg  hover-to-shadow w-">
                             <span className="signer-name text-white text-xxl flex flex-row gap-2 justify-center items-center">
                                 <RiAdminFill size={36} />
@@ -64,7 +64,7 @@ export default function View() {
                         </button>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }
