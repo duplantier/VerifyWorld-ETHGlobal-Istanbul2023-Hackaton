@@ -10,11 +10,16 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@worldcoin/idkit": "^0.5.1",
+    "ipfs-core": "^0.18.1",
+    "ipfs-http-client": "^60.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-error-overlay": "^6.0.9",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.19.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -42,6 +47,16 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.5"
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tailwindcss": "^3.3.5",
+    "url": "^0.11.3"
   }
 }
