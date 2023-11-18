@@ -31,6 +31,20 @@ const client = new Web3Storage({ token: web3StorageKey })
     })
 
     const [signedUsers, setSignedUsers] = useState([])
+    const [selectedBlob, setSelectedBlob] = useState(null)
+
+    const downloadBlob = () => {
+        const url = URL.createObjectURL(selectedBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileData.name;
+      
+        // Programmatically trigger a click on the link
+        link.click();
+      
+        // Clean up resources
+        URL.revokeObjectURL(url);
+      };
 
     useEffect(() => {
         const worker = async () => {
@@ -41,20 +55,11 @@ const client = new Web3Storage({ token: web3StorageKey })
             // get file data from ipfs
     
             const res = await client.get(file_id) // Promise<Web3Response | null>
-            const files = await res.files() // Promise<Web3File[]>
+            const blob_data = await res.blob() // Promise<Blob>
+            setSelectedBlob(blob_data);
 
-            for (const file of files) {
-                if(file.name){
-                    setFileData({
-                        name: file.name,
-                        type: file.name.split(".")[1],
-                        can_be_viewed: true,
-                        can_be_downloaded: true,
-                        download_link: "https://google.com",
-                        open_link: "https://google.com" 
-                    })
-                }
-            }
+
+        
     
             // get users who signed the file
     
@@ -103,9 +108,7 @@ const client = new Web3Storage({ token: web3StorageKey })
                         <span className="text-white text-2xl">
                             {fileData.name}
                         </span>
-                        {fileData.can_be_downloaded && <span className="p-3 download-btn hover-to-shadow rounded-xl" onClick={() => {
-                            openInNewTab(fileData.download_link)
-                        }}>
+                        {fileData.can_be_downloaded && <span className="p-3 download-btn hover-to-shadow rounded-xl" onClick={downloadBlob}>
                             <IoMdDownload className="download-icon " size={20} />
                         </span>}
                         {fileData.can_be_viewed && <span className="rounded-xl see-btn p-3 hover-to-shadow" onClick={() => {
