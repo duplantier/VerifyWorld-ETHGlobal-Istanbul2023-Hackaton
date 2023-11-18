@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useDropzone } from 'react-dropzone'
@@ -9,9 +9,12 @@ import { MdCloudUpload } from "react-icons/md";
 import AffiSnackbar from "../Dialogs/AffiSnackbar";
 import { IDKitWidget } from '@worldcoin/idkit'
 import { MdCloudDownload } from "react-icons/md";
+import { Web3Storage } from "web3.storage";
+
+const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
+const client = new Web3Storage({ token: web3StorageKey })
 
 function MyDropzone({ files, setFiles, gaveError }) {
-
     const onDrop = React.useCallback(acceptedFiles => {
         if (acceptedFiles.length === 0) return false
         if (acceptedFiles.length > 1) {
@@ -153,8 +156,9 @@ const Upload = () => {
     const [files, setFiles] = React.useState([])
     const [isIdKitOpen, setIsIdKitOpen] = React.useState(false)
     const [uploadedFileId, setUploadedFileId] = React.useState("")
-    const [backdropOpen, setBackdropOpen] = React.useState(false)
+    const [uploadText, setUploadText] = useState("Upload & Sign The Document")
 
+    const [backdropOpen, setBackdropOpen] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState({
         open: false,
         text: "",
@@ -184,14 +188,17 @@ const Upload = () => {
             return false
         }
 
-        setBackdropOpen(true)
-
-        const uploaded_file_id = "this_is_a_placeholder_id" // upload file to ipfs and get the id
-        setUploadedFileId(uploaded_file_id)
-
-        setBackdropOpen(false)
-
-        setIsIdKitOpen(true)
+        setUploadText("Uploading to IPFS...")
+        client.put(files)
+            .then((cid) => {
+                return client.status(cid)
+            })
+            .then((status) => {
+                console.log("Uploaded to IPFS:", status)
+                setUploadedFileId(status["cid"])
+                setIsIdKitOpen(true)
+                setUploadText("Uploading to IPFS... Done")
+            });
     }
 
     return (
@@ -258,7 +265,7 @@ const Upload = () => {
                 mb: "2rem",
             }}>
                 <button onClick={handleSubmit} className="upload-sign-btn p-3 font-bold rounded-[12px] text-black ">
-                    Upload & Sign The Document
+                    {uploadText}
                 </button>
             </Box>
 
