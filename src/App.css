@@ -3,10 +3,18 @@
 @tailwind utilities;
 
 /* General Purposes */
+
+.hover-to-shadow {
+  cursor: pointer;
+  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.43);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
 .hover-to-shadow:hover {
   cursor: pointer;
   box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.43);
   border: 1px solid rgba(255, 255, 255, 0.125);
+  background-color: rgba(255, 255, 255, 0.125);
 }
 
 .main-container {
@@ -127,4 +135,38 @@
   border: 2px solid #02b27e;
   color: #29ffbf;
   box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.43);
+}
+
+.file-info {
+  width: 100%;
+}
+
+
+.contract-card {
+  border: none;
+  box-shadow: none;
+  backdrop-filter: blur(1px) saturate(180%);
+  height: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .main-container {
+    background-size: cover;
+    animation: none;
+    height: auto;
+    padding: 2.5rem 0 2.5rem 0;
+  }
+
+  .contract-card {
+    height: auto;
+  }
+
+}
+
+@media screen and (min-width: 768px) {
+  .main-container {
+    height: auto;
+  }
+
+
 }

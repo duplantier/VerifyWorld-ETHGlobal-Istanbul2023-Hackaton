@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useDropzone } from 'react-dropzone'
@@ -37,7 +37,12 @@ function MyDropzone({ files, setFiles, gaveError }) {
 
     return (
         <Box component={"div"} sx={{
-            width: "800px",
+            width: '90%',
+            margin: "1rem",
+            "md:": {
+                margin: "2rem",
+                width: "800px",
+            },
             border: "2px dashed rgba(255, 255, 255, 0.5)",
             borderRadius: "24px",
             display: "flex",
@@ -46,7 +51,6 @@ function MyDropzone({ files, setFiles, gaveError }) {
             flexDirection: "column",
             gap: "1rem",
             padding: "1rem",
-            margin: "2rem auto",
             background: isDragActive ? "rgba(255, 255, 255, 0.125)" : "rgba(255, 255, 255, 0.20)",
             backdropFilter: "blur(10px) saturate(180%)",
 
@@ -70,6 +74,7 @@ function MyDropzone({ files, setFiles, gaveError }) {
                         <Box component={"div"}>
                             <Typography variant="h3" sx={{
                                 fontSize: "1.5rem",
+                                textAlign: "center",
                                 display: "flex",
                                 flexDirection: 'column',
                                 mt: "1rem",
@@ -87,6 +92,7 @@ function MyDropzone({ files, setFiles, gaveError }) {
                             <Typography variant="h3" sx={{
                                 fontSize: "1.5rem",
                                 mt: "1rem",
+                                textAlign: "center",
                                 display: "flex",
                                 flexDirection: 'column',
                                 alignItems: "center",
@@ -189,7 +195,7 @@ const Upload = () => {
         }
 
         setBackdropOpen(true)
-        
+
         setUploadText("Uploading to IPFS...")
         await client.put(files)
             .then((cid) => {
@@ -197,8 +203,8 @@ const Upload = () => {
             })
             .then((status) => {
                 console.log("Uploaded to IPFS:", status)
-                setUploadedFileId(status["cid"])        
-                setUploadText("Uploading to Worldcoin...")        
+                setUploadedFileId(status["cid"])
+                setUploadText("Uploading to Worldcoin...")
                 setIsIdKitOpen(true)
                 setBackdropOpen(false)
             });
