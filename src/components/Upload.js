@@ -37,12 +37,7 @@ function MyDropzone({ files, setFiles, gaveError }) {
 
     return (
         <Box component={"div"} sx={{
-            width: '90%',
             margin: "1rem",
-            "md:": {
-                margin: "2rem",
-                width: "800px",
-            },
             border: "2px dashed rgba(255, 255, 255, 0.5)",
             borderRadius: "24px",
             display: "flex",
@@ -61,14 +56,7 @@ function MyDropzone({ files, setFiles, gaveError }) {
 
         }} {...getRootProps()}>
             <input {...getInputProps()} />
-            <Box sx={{
-                height: "200px",
-                width: "100%",
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: "column",
-            }}>
+            <Box className='h-[200px] xs:w-[90%] lg:w-[80vh] flex justify-center items-center flex-col xs:m-[1rem] md:m-[2rem] ' >
                 {
                     isDragActive ?
                         <Box component={"div"}>

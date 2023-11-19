@@ -119,6 +119,24 @@ export default function View() {
                     isOwner: false,
                     date: 1700319583000
                 },
+                {
+                    userId: "+90 531 351 6308",
+                    status: "Signed & Verified",
+                    isOwner: false,
+                    date: 1700319583000
+                },
+                {
+                    userId: "+90 531 351 6308",
+                    status: "Signed & Verified",
+                    isOwner: false,
+                    date: 1700319583000
+                },
+                {
+                    userId: "+90 531 351 6308",
+                    status: "Signed & Verified",
+                    isOwner: false,
+                    date: 1700319583000
+                },
             ])
 
 
@@ -143,9 +161,9 @@ export default function View() {
             <Backdrop open={backdropOpen} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <div className="w-[90%] h-[110vh] md:h-[70vh] lg:w-[90%] contract-card m-3 lg:m-5  rounded-[24px]">
-                <div className="h-auto lg:px-6 lg:py-4 flex flex-col justify-around items-center lg:w-[100%] bg-none">
-                    <div className="flex flex-col md:flex-row justify-center items-center p-3 m-5 text-center lg:mt-3 lg:p-4 md:w-[90%] lg:w-[100%] rounded-lg hover-to-shadow file-info gap-4" >
+            <div className="w-[90%] lg:w-[90%] md:h-[75vh] lg:h-[80vh] xl:h-[70vh] flex flex-col justify-center items-center  contract-card m-3 lg:m-5 rounded-[24px]">
+                <div className="h-[100vh] md:h-[65vh] lg:w-[100%] lg:h-[70vh]  px-4 flex flex-col justify-between  items-center ">
+                    <div className="w-[90%] md:w-[90%] lg:w-[100%] flex flex-col md:flex-row justify-center  items-center p-3 m-5 mb-0 text-center rounded-lg hover-to-shadow file-info gap-4" >
                         {
                             fileData.type === "pdf" ? <BsFilePdfFill color="#ee2b2b" size={50} /> :
                                 fileData.type === "docx" ? <FaFileWord color="#ee2b2b" size={50} /> :
@@ -165,7 +183,7 @@ export default function View() {
                         </div>
 
                     </div>
-                    <div className="signers flex flex-col gap-5 justify-center md:align-start w-[90%] h-[550px] md:h-[auto] md:my-0 overflow-y-scroll p-4 pt-0">
+                    <div className="signers flex flex-col  gap-5 justify-center w-[90%] h-[80vh] md:h-[50vh] lg:h-[30vh] xl:h-[35vh] md:my-0 overflow-y-scroll lg:py-16 lg:px-6 ">
                         {
                             signedUsers.map((user, index) => {
                                 return <div className="signer flex flex-col md:flex-row justify-center align-center gap-4 p-3 rounded-lg  hover-to-shadow w-[100%}">
@@ -191,13 +209,10 @@ export default function View() {
                                         }
                                     </span>
                                 </div>
-
                             })
                         }
-
-
                     </div>
-                    <div className="sign-button my-6 md:my-8 lg:my-1 xl:my-0 rounded-xl">
+                    <div className="sign-button my-6 md:my-8 lg:my-5 rounded-xl">
                         <button className="text-white flex justify-center items-center gap-2 sign-button p-3 rounded-xl hover-to-shadow" onClick={() => { SignButtonClicked() }}>
                             <FaFileSignature className="sign-icon" size={30} />
                             Sign the Contract
