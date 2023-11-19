@@ -16,9 +16,8 @@ import { recursive as exporter } from 'ipfs-unixfs-exporter'
 import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function View() {
-    const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
+    const web3StorageKey = process.env.REACT_APP_IPFS_KEY
     const client = new Web3Storage({ token: web3StorageKey })
-
 
     const [backdropOpen, setBackdropOpen] = useState(false)
     const { file_id } = useParams()

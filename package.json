@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@web3-storage/w3up-client": "^11.0.1",
     "@worldcoin/idkit": "^0.5.1",
+    "ethers": "^5.7.2",
     "ipfs-car": "^1.0.0",
     "ipfs-core": "^0.18.1",
     "ipfs-http-client": "^60.0.1",
