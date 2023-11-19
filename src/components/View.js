@@ -4,7 +4,6 @@ import { IoCalendar } from "react-icons/io5";
 import { RiAdminFill } from "react-icons/ri";
 import { FaFileSignature } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
-import { BsEyeFill } from "react-icons/bs";
 import { FaFileWord, FaFileContract } from "react-icons/fa";
 import { IoDocumentText } from "react-icons/io5";
 
@@ -14,14 +13,23 @@ import { Web3Storage } from "web3.storage";
 import { CarReader } from '@ipld/car/reader'
 import { recursive as exporter } from 'ipfs-unixfs-exporter'
 import { Backdrop, CircularProgress } from "@mui/material";
+import { IDKitWidget } from '@worldcoin/idkit'
+import AffiSnackbar from "../Dialogs/AffiSnackbar";
 
 export default function View() {
     const web3StorageKey = process.env.REACT_APP_IPFS_KEY
     const client = new Web3Storage({ token: web3StorageKey })
 
     const [backdropOpen, setBackdropOpen] = useState(false)
+    const [isIdKitOpen, setIsIdKitOpen] = useState(false)
     const { file_id } = useParams()
     const navigate = useNavigate()
+
+    const [snackOpen, setSnackOpen] = useState({
+        open: false,
+        text: "",
+        is_success: false,
+    });
 
     const openInNewTab = (url) => {
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -149,13 +157,66 @@ export default function View() {
     const SignButtonClicked = () => {
         // sign the file
 
-        console.log("sign button clicked")
+        setIsIdKitOpen(true)
 
         return true
     }
 
     return (
         <>
+            <AffiSnackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen} />
+                    <IDKitWidget
+                app_id="app_9c6ee19d87889b2f583957ad6f541f66" // obtained from the Developer Portal
+                action="upload-and-sign" // this is your action name from the Developer Portal
+                onSuccess={() => {
+                    // navigate("/view/" + uploadedFileId)
+                    // no need to navigate, just close the modal
+
+                }} // callback when the modal is closed
+                handleVerify={async (data) => {
+                    const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            ...data,
+                            file_id: file_id,
+                        }),
+                    })
+
+                    const response = await response_from_backend.json()
+
+                    if (response.isVerified) {
+                        setSnackOpen({
+                            open: true,
+                            text: "Your identity is verified",
+                            is_success: true,
+                        });
+
+                        // TODO ADD YOUR DATA HERE
+                        console.log(data, "verified")
+
+                    }
+                    else {
+                        setSnackOpen({
+                            open: true,
+                            text: "Your identity is not verified",
+                            is_success: false,
+                        });
+
+                    }
+
+                    setIsIdKitOpen(false)
+                    return true
+
+                }} // optional callback when the proof is received
+                credential_types={['orb', 'phone']} // optional, defaults to ['orb']
+                enableTelemetry // optional, defaults to false
+            >
+                {({ open }) => isIdKitOpen && open()}
+            </IDKitWidget>
+            
             <Backdrop open={backdropOpen} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
                 <CircularProgress color="inherit" />
             </Backdrop>
