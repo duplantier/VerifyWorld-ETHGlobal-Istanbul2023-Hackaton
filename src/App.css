@@ -145,8 +145,7 @@
 .contract-card {
   border: none;
   box-shadow: none;
-  backdrop-filter: blur(1px) saturate(180%);
-  height: auto;
+  backdrop-filter: none;
 }
 
 @media screen and (max-width: 768px) {
@@ -157,15 +156,19 @@
     padding: 2.5rem 0 2.5rem 0;
   }
 
-  .contract-card {
-    height: auto;
-  }
 
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 769px) {
   .main-container {
-    height: auto;
+    background-size: cover;
+    height: 100vh !important;
+
+    padding: 2.5rem 0 2.5rem 0;
+  }
+
+  .contract-card {
+    padding: 4rem 0 2rem 0;
   }
 
 
