@@ -208,12 +208,13 @@ const Upload = () => {
             <AffiSnackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen} />
 
             <IDKitWidget
-                app_id="app_9c6ee19d87889b2f583957ad6f541f66" // obtained from the Developer Portal
-                action="upload-and-sign" // this is your action name from the Developer Portal
+                app_id={process.env.REACT_APP_WORLDID_APP_ID} // obtained from the Developer Portal
+                action={process.env.REACT_APP_WORLDID_ACTION} // this is your action name from the Developer Portal
                 onSuccess={() => {
                     navigate("/view/" + uploadedFileId)
                 }} // callback when the modal is closed
                 handleVerify={async (data) => {
+                    console.log("Data from IDKit", data)
                     const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
                         method: "POST",
                         headers: {
@@ -224,7 +225,6 @@ const Upload = () => {
                             file_id: uploadedFileId,
                         }),
                     })
-
                     const response = await response_from_backend.json()
 
                     if (response.isVerified) {
@@ -236,6 +236,7 @@ const Upload = () => {
 
                         const document = await createNewDocument(
                             uploadedFileId,
+                            data.credential_type,
                             data.merkle_root,
                             data.nullifier_hash,
                             data.proof
