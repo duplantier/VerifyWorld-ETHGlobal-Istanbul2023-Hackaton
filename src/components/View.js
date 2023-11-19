@@ -96,7 +96,7 @@ export default function View() {
 
                     setFileData((prevFileData) => ({
                         ...prevFileData,
-                        name: file_name.slice(0, file_name.length - 4),
+                        name: file_name.split(".").slice(0, -1).join("."),
                         type: file_name.split(".")[file_name.split(".").length-1],
                         can_be_viewed: true,
                         url_of_file: url_of_file,
@@ -153,7 +153,7 @@ export default function View() {
 
                         <span className="text-white text-2xl text-center">
                             {
-                                (fileData.name > 30 ? fileData.name.slice(0, 27) + ".." : fileData.name) + "." + fileData.type
+                                (fileData.name.length > 30 ? fileData.name.slice(0, 27) + ".." : fileData.name) + "." + fileData.type
                             }
                         </span>
 
