@@ -97,7 +97,7 @@ export default function View() {
                     setFileData((prevFileData) => ({
                         ...prevFileData,
                         name: file_name.split(".").slice(0, -1).join("."),
-                        type: file_name.split(".")[file_name.split(".").length-1],
+                        type: file_name.split(".")[file_name.split(".").length - 1],
                         can_be_viewed: true,
                         url_of_file: url_of_file,
                     }));

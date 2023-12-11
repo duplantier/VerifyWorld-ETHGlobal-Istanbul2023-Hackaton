@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# VerifyWorld ✅ - Document Signing DApp with World ID Signatures
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br>
 
-## Available Scripts
+## 📖 About The Project
 
-In the project directory, you can run:
+VerifyWorld is a document signing Decentralized Application (DApp) that harnesses the power of World ID signatures for user identity verification. With the help of Filecoin Labs' IPFS, users can easily upload their documents and share signing links with others. Our project seamlessly integrates the Cartesi Rollup SQLite database to securely store verification signatures.
 
-### `npm start`
+The application's functionality is designed to be user-friendly. Here's how it works:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. The document owner uploads and signs the document.
+2. The owner shares the signing link with other users.
+3. Other users can view existing signers or sign the contract themselves.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To illustrate a real-life scenario, consider hiring a freelancer from another country. Instead of dealing with complex e-signature platforms, VerifyWorld simplifies the process by allowing users to sign documents or data using World ID, ensuring a streamlined and secure experience.
 
-### `npm test`
+### 🌟 Project Development Progress
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+VerifyWorld is developed in the ETHGlobal Istanbul Hackathon held at the ICC Istanbul Congress Center from 17th to 19th November 2023 as part of ODTÜ Blockchain.
 
-### `npm run build`
+### 🤝 Team
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Tarık Kızıltan:** dApp back-end (Python, Cartesi Rollups, SQlite, IPFS...)
+- **Burak Toy:** React back-end configurations and setting up fundamental infrastructures of the front-end
+- **Hüseyin Karataş:** Front-end/UI development with React and TailwindCSS
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<br>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Features
 
-### `npm run eject`
+- Document signing with World ID signatures.
+- Secure storage of verification signatures using Cartesi Rollup SQLite.
+- User-friendly interface for document owners and signers.
+- Sharing of signing links.
+- Responsive design using React.js, Tailwind CSS, and traditional CSS for an engaging user experience.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<br>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Technologies Used
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- React.js
+- Tailwind CSS
+- CSS
+- IPFS (InterPlanetary File System)
+- Cartesi Rollup SQLite
