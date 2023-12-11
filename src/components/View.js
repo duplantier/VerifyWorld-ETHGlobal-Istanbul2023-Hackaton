@@ -4,7 +4,6 @@ import { IoCalendar } from "react-icons/io5";
 import { RiAdminFill } from "react-icons/ri";
 import { FaFileSignature } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
-import { BsEyeFill } from "react-icons/bs";
 import { FaFileWord, FaFileContract } from "react-icons/fa";
 import { IoDocumentText } from "react-icons/io5";
 
@@ -14,15 +13,28 @@ import { Web3Storage } from "web3.storage";
 import { CarReader } from '@ipld/car/reader'
 import { recursive as exporter } from 'ipfs-unixfs-exporter'
 import { Backdrop, CircularProgress } from "@mui/material";
+import { IDKitWidget } from '@worldcoin/idkit'
+import AffiSnackbar from "../Dialogs/AffiSnackbar";
+import {createNewDocument, listDocumentSigners, signDocument} from "../utils/cartesi";
+
+function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+}
 
 export default function View() {
-    const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
+    const web3StorageKey = process.env.REACT_APP_IPFS_KEY
     const client = new Web3Storage({ token: web3StorageKey })
 
-
     const [backdropOpen, setBackdropOpen] = useState(false)
+    const [isIdKitOpen, setIsIdKitOpen] = useState(false)
     const { file_id } = useParams()
     const navigate = useNavigate()
+
+    const [snackOpen, setSnackOpen] = useState({
+        open: false,
+        text: "",
+        is_success: false,
+    });
 
     const openInNewTab = (url) => {
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -45,12 +57,12 @@ export default function View() {
         const res = await fetch(url_of_file)
         const blob = await res.blob()
 
-        const rrrr = await CarReader.fromBytes(new Uint8Array(await blob.arrayBuffer()))
-        const roots = await rrrr.getRoots()
+        const carRaw = await CarReader.fromBytes(new Uint8Array(await blob.arrayBuffer()))
+        const roots = await carRaw.getRoots()
 
         const entries = exporter(roots[0], {
             async get(cid) {
-                const block = await rrrr.get(cid)
+                const block = await carRaw.get(cid)
                 return block.bytes
             }
         })
@@ -103,44 +115,54 @@ export default function View() {
                     }));
                 }
             }
+
             // get users who signed the file
+            if (signedUsers.length === 0) {
+                listDocumentSigners(file_id).then(async (signers) => {
+                    console.log("signers", signers);
 
-            setSignedUsers([
-                {
-                    userId: "+90 546 972 4659",
-                    status: "Signed & Verified",
-                    isOwner: true,
-                    date: 1700319583000
-                },
-                {
-                    userId: "+90 531 351 6308",
-                    status: "Signed & Verified",
-                    isOwner: false,
-                    date: 1700319583000
-                },
-                {
-                    userId: "+90 531 351 6308",
-                    status: "Signed & Verified",
-                    isOwner: false,
-                    date: 1700319583000
-                },
-                {
-                    userId: "+90 531 351 6308",
-                    status: "Signed & Verified",
-                    isOwner: false,
-                    date: 1700319583000
-                },
-                {
-                    userId: "+90 531 351 6308",
-                    status: "Signed & Verified",
-                    isOwner: false,
-                    date: 1700319583000
-                },
-            ])
+                    // iterate over signers and get their info
+                    const info = [];
+                    for (const signer of signers) {
+                        const [
+                            credType,
+                            merkleRoot,
+                            nullifierHash,
+                            proof
+                        ] = signer;
 
+                        // verify signer
+                        const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                merkle_root: merkleRoot,
+                                nullifier_hash: nullifierHash,
+                                proof: proof,
+                                action: process.env.REACT_APP_WORLDID_ACTION,
+                                credential_type: credType
+                            }),
+                        })
+                        const response = await response_from_backend.json()
 
-            setBackdropOpen(false)
+                        if (response.isVerified) {
+                            console.log("verified", response)
+                            info.push({
+                                userId: truncate(nullifierHash, 10),
+                                status: "Signed & Verified",
+                                isOwner: signers.indexOf(signer) === 0,
+                                date: 1700319583000, // write to database instead of hardcoding (need time)
+                            })
+                        }
+                    }
 
+                    console.log(info)
+                    setSignedUsers(info)
+                    setBackdropOpen(false)
+                });
+            }
         }
 
         worker()
@@ -150,13 +172,73 @@ export default function View() {
     const SignButtonClicked = () => {
         // sign the file
 
-        console.log("sign button clicked")
+        setIsIdKitOpen(true)
 
         return true
     }
 
     return (
         <>
+            <AffiSnackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen} />
+                    <IDKitWidget
+                        app_id={process.env.REACT_APP_WORLDID_APP_ID} // obtained from the Developer Portal
+                        action={process.env.REACT_APP_WORLDID_ACTION} // this is your action name from the Developer Portal
+                        onSuccess={
+                            () => {
+                    window.location.reload()
+                    setIsIdKitOpen(false)
+                }} // callback when the modal is closed
+                handleVerify={async (data) => {
+                    const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            ...data,
+                            file_id: file_id,
+                        }),
+                    })
+
+                    const response = await response_from_backend.json()
+
+                    if (response.isVerified) {
+                        setSnackOpen({
+                            open: true,
+                            text: "Your identity is verified",
+                            is_success: true,
+                        });
+
+                        const document = await signDocument(
+                            file_id,
+                            data.credential_type,
+                            data.merkle_root,
+                            data.nullifier_hash,
+                            data.proof
+                        )
+                        console.log("Saved to cartesi", document)
+                        console.log(data, "verified")
+
+                    }
+                    else {
+                        setSnackOpen({
+                            open: true,
+                            text: "Your identity is not verified",
+                            is_success: false,
+                        });
+
+                    }
+
+                    setIsIdKitOpen(false)
+                    return true
+
+                }} // optional callback when the proof is received
+                credential_types={['orb', 'phone']} // optional, defaults to ['orb']
+                enableTelemetry // optional, defaults to false
+            >
+                {({ open }) => isIdKitOpen && open()}
+            </IDKitWidget>
+            
             <Backdrop open={backdropOpen} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
                 <CircularProgress color="inherit" />
             </Backdrop>

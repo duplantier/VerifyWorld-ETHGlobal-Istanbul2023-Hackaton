@@ -10,8 +10,9 @@ import AffiSnackbar from "../Dialogs/AffiSnackbar";
 import { IDKitWidget } from '@worldcoin/idkit'
 import { MdCloudDownload } from "react-icons/md";
 import { Web3Storage } from "web3.storage";
+import {createNewDocument} from "../utils/cartesi";
 
-const web3StorageKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQwNGIyMEEzMmU2RGE0YTRDNmE1Mzk5MTg5NTc4RGFlM0ZCNkY5Y0UiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTIzMzY1OTIzMjUsIm5hbWUiOiJkd2V0cmFuc2ZlciJ9.qU0dEfGsmi1-UiBv4slk1a7jidaPBehkCYxab6WRun0";
+const web3StorageKey = process.env.REACT_APP_IPFS_KEY;
 const client = new Web3Storage({ token: web3StorageKey })
 
 function MyDropzone({ files, setFiles, gaveError }) {
@@ -207,12 +208,13 @@ const Upload = () => {
             <AffiSnackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen} />
 
             <IDKitWidget
-                app_id="app_9c6ee19d87889b2f583957ad6f541f66" // obtained from the Developer Portal
-                action="upload-and-sign" // this is your action name from the Developer Portal
+                app_id={process.env.REACT_APP_WORLDID_APP_ID} // obtained from the Developer Portal
+                action={process.env.REACT_APP_WORLDID_ACTION} // this is your action name from the Developer Portal
                 onSuccess={() => {
                     navigate("/view/" + uploadedFileId)
                 }} // callback when the modal is closed
                 handleVerify={async (data) => {
+                    console.log("Data from IDKit", data)
                     const response_from_backend = await fetch("https://verifyworldcoinid-t2ajiqka5a-uc.a.run.app", {
                         method: "POST",
                         headers: {
@@ -223,7 +225,6 @@ const Upload = () => {
                             file_id: uploadedFileId,
                         }),
                     })
-
                     const response = await response_from_backend.json()
 
                     if (response.isVerified) {
@@ -232,6 +233,15 @@ const Upload = () => {
                             text: "Your identity is verified",
                             is_success: true,
                         });
+
+                        const document = await createNewDocument(
+                            uploadedFileId,
+                            data.credential_type,
+                            data.merkle_root,
+                            data.nullifier_hash,
+                            data.proof
+                        )
+                        console.log("Saved to cartesi", document)
 
                     }
                     else {

@@ -1,6 +1,0 @@
-
-/ Web3 front-end için:
-kontrat okumak
-solidity temelli
-graphql / graph
-ethers, wagmi, viem 
