@@ -38,8 +38,19 @@ VerifyWorld is developed in the ETHGlobal Istanbul Hackathon held at the ICC Ist
 
 ## 🛠️ Technologies Used
 
-- React.js
-- Tailwind CSS
-- CSS
+- Python
+- WorldID
 - IPFS (InterPlanetary File System)
 - Cartesi Rollup SQLite
+- React.js
+- Tailwind CSS
+
+![](./src/assets/img4.jpg)
+<br><br>
+![](./src/assets/img2.jpg)
+<br><br>
+![](./src/assets/img3.jpg)
+<br><br>
+![](./src/assets/img1.jpg)
+<br><br>
+![](./src/assets/img5.jpg)
